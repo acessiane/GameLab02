@@ -11,6 +11,8 @@ public class HandleFlag : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        createFireWork();
     }
 
     // Update is called once per frame
@@ -39,6 +41,7 @@ public class HandleFlag : MonoBehaviour
 
     void createFireWork()
     {
+        
         float randomX = Random.Range(-1, 1);
         float randomY = Random.Range(0, 1);
         float size = 5.0f;

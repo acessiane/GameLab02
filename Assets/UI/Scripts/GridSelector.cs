@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
 using TMPro;
+using Unity.VisualScripting;
 
 public class GridSelector : MonoBehaviour
 {
@@ -38,6 +39,7 @@ public class GridSelector : MonoBehaviour
     private List<GameObject> instantiatedUnableGrids;
     private List<GameObject> instantiatedBlockObjs;
 
+    private Tilemap mainTilemap;
     private HashSet<Vector2Int> preventedBlocksSet;
     private Vector2Int minTileBound = new Vector2Int(-30, -30);
     private Vector2Int maxTileBound = new Vector2Int(120, 60);
@@ -54,7 +56,7 @@ public class GridSelector : MonoBehaviour
         { BlockType.JUMP_LAUNCHER, new Vector2Int(3, 1) },
         { BlockType.NORMAL, new Vector2Int(3, 1) },
         { BlockType.ROTATION, new Vector2Int(1, 1) },
-        { BlockType.FERRIS, new Vector2Int(6, 6) },
+        { BlockType.FERRIS, new Vector2Int(7, 6) },
         { BlockType.CONVEYOR, new Vector2Int(4, 1) },
         { BlockType.SPIKE_SMALL, new Vector2Int(1, 1) },
         { BlockType.SPIKE_BIG, new Vector2Int(3, 1) },
@@ -85,7 +87,8 @@ public class GridSelector : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (hasInitialized && DontDestroyObject.Instance.IsEditMode()) {
+        if (hasInitialized && DontDestroyObject.Instance.IsEditMode())
+        {
             if (selectedBlockInfo.type != BlockType.NONE && selectedBlockInfo.type != BlockType.DELETE)
             {
                 if (instantiatedUnableGrids.Count != 0)
@@ -111,9 +114,9 @@ public class GridSelector : MonoBehaviour
                     instantiatedSelectGrids = new List<GameObject>();
 
                     Vector3 targetPos = selectionTilemap.GetCellCenterWorld(hoverPos);
-                    Vector2Int blockSize = 
-                        selectedBlockInfo.isHalfRotated ? 
-                        new Vector2Int(blockSizeData[selectedBlockInfo.type].y, blockSizeData[selectedBlockInfo.type].x) : 
+                    Vector2Int blockSize =
+                        selectedBlockInfo.isHalfRotated ?
+                        new Vector2Int(blockSizeData[selectedBlockInfo.type].y, blockSizeData[selectedBlockInfo.type].x) :
                         blockSizeData[selectedBlockInfo.type];
                     Vector3 startPos = GetStartGridPos(targetPos, blockSize);
 
@@ -144,9 +147,9 @@ public class GridSelector : MonoBehaviour
                 if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject() && isValidToPlace)
                 {
                     Vector3 targetPos = selectionTilemap.GetCellCenterWorld(hoverPos);
-                    Vector2Int blockSize = 
-                        selectedBlockInfo.isHalfRotated ? 
-                        new Vector2Int(blockSizeData[selectedBlockInfo.type].y, blockSizeData[selectedBlockInfo.type].x) : 
+                    Vector2Int blockSize =
+                        selectedBlockInfo.isHalfRotated ?
+                        new Vector2Int(blockSizeData[selectedBlockInfo.type].y, blockSizeData[selectedBlockInfo.type].x) :
                         blockSizeData[selectedBlockInfo.type];
                     selectedBlockInfo.startGridPos = selectionTilemap.WorldToCell(GetStartGridPos(targetPos, blockSize));
                     PlaceBlockObj(selectedBlockInfo);
@@ -159,7 +162,7 @@ public class GridSelector : MonoBehaviour
             }
         }
     }
-    
+
     public void InitSelectionUI(int level)
     {
         blockObjectData = new Dictionary<BlockType, GameObject>();
@@ -196,16 +199,14 @@ public class GridSelector : MonoBehaviour
         instantiatedUnableGrids = new List<GameObject>();
         instantiatedBlockObjs = new List<GameObject>();
 
+        SearchPreventedBlocks();
         foreach (BlockInfo b in curMapData.defaultBlocks)
         {
             PlaceBlockObj(b);
         }
 
-        nonBlockInfo = new BlockInfo();
-        nonBlockInfo.type = BlockType.NONE;
+        nonBlockInfo = new BlockInfo { type = BlockType.NONE };
         selectedBlockInfo = nonBlockInfo;
-
-        SearchPreventedBlocks();
 
         hasInitialized = true;
     }
@@ -238,9 +239,10 @@ public class GridSelector : MonoBehaviour
             GameObject bimg = Instantiate(blockBtnImgData[blockInfo.type]);
             bimg.GetComponent<RectTransform>().SetParent(b.GetComponent<RectTransform>());
             bimg.GetComponent<RectTransform>().rotation = Quaternion.Euler(new Vector3(0, 0, blockInfo.rotation));
-        } else
+        }
+        else
         {
-            b.transform.Find("BlockName").GetComponent<TextMeshProUGUI>().text = "삭제";
+            b.transform.Find("BlockName").GetComponent<TextMeshProUGUI>().text = "삭제하기";
 
             GameObject bimg = Instantiate(deleteButtonImagePrefab);
             bimg.GetComponent<RectTransform>().SetParent(b.GetComponent<RectTransform>());
@@ -254,13 +256,27 @@ public class GridSelector : MonoBehaviour
         g.GetComponent<BlockBase>().SetStartGridPos(blockInfo.startGridPos);
         g.GetComponent<Transform>().rotation = Quaternion.Euler(new Vector3(0, 0, blockInfo.rotation));
 
-        Vector2Int blockSize = 
-            blockInfo.isHalfRotated ? 
-            new Vector2Int(blockSizeData[blockInfo.type].y, blockSizeData[blockInfo.type].x) : 
-            blockSizeData[blockInfo.type]; 
+        Vector2Int blockSize =
+            blockInfo.isHalfRotated ?
+            new Vector2Int(blockSizeData[blockInfo.type].y, blockSizeData[blockInfo.type].x) :
+            blockSizeData[blockInfo.type];
         Vector3 startPos = selectionTilemap.GetCellCenterWorld(blockInfo.startGridPos);
         Vector3 endPos = GetEndGridPos(startPos, blockSize);
         Vector3 position = (startPos + endPos) / 2;
+
+        List<Vector2Int> preventTilesT = new List<Vector2Int>();
+        for (int i = 0; i < blockSize.x; i++)
+        {
+            for (int j = 0; j < blockSize.y; j++)
+            {
+                preventTilesT.Add(new Vector2Int(blockInfo.startGridPos.x + i, blockInfo.startGridPos.y + j));
+            }
+        }
+
+        foreach (Vector2Int t in preventTilesT)
+        {
+            preventedBlocksSet.Add(t);
+        }
 
         g.GetComponent<Transform>().position = position;
         g.GetComponent<BlockBase>().SetInitialPos(position);
@@ -281,6 +297,11 @@ public class GridSelector : MonoBehaviour
                     }
 
                     instantiatedUnableGrids = new List<GameObject>();
+                }
+
+                foreach (Vector2Int t in preventTilesT)
+                {
+                    preventedBlocksSet.Remove(t);
                 }
 
                 FinishEditMode();
@@ -422,19 +443,21 @@ public class GridSelector : MonoBehaviour
     {
         preventedBlocksSet = new HashSet<Vector2Int>();
 
-        GameObject preventedTileObj = GameObject.Find("PreventTilemap");
-        Tilemap preventedTilemap = preventedTileObj.GetComponent<Tilemap>();
+        mainTilemap = GameObject.Find("GroundTile").GetComponentInChildren<Tilemap>();
 
         for (int i = minTileBound.x; i < maxTileBound.x; i++)
         {
             for (int j = minTileBound.y; j < maxTileBound.y; j++)
             {
-                if (preventedTilemap.HasTile(new Vector3Int(i, j, 0)))
+                if (mainTilemap.HasTile(new Vector3Int(i, j, 0)))
                 {
                     preventedBlocksSet.Add(new Vector2Int(i, j));
                 }
             }
         }
+
+        Vector3Int t = mainTilemap.WorldToCell(GameObject.Find("Player").transform.position);
+        preventedBlocksSet.Add(new Vector2Int(t.x, t.y));
     }
 
     private bool IsValidPositionToPlace(Vector2Int hoverPosition)

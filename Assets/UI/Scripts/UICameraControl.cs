@@ -71,6 +71,8 @@ public class UICameraControl : MonoBehaviour
     public void Init()
     {
         UICamera.orthographicSize = initialSize;
-        transform.position = initialPos;
+        Vector3 t = GameObject.Find("Player").transform.position;
+        t.z = -10;
+        transform.position = t; 
     }
 }

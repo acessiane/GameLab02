@@ -22,15 +22,23 @@ public class GameManager
     public void StartStage(int stageNum)
     {
         gridSelector = UnityEngine.Object.FindObjectOfType<GridSelector>();
+        selectionUI = GameObject.Find("SelectionUI");
         gridSelector.InitSelectionUI(stageNum);
 
         playCamera = UnityEngine.Object.FindObjectOfType<CameraFollow>();
         editCamera = UnityEngine.Object.FindObjectOfType<UICameraControl>();
-        selectionUI = GameObject.Find("SelectionUI");
+        
 
         deathCount = -1;
-
-        EditMode();
+        if (stageNum != 1)
+        {
+            EditMode();
+        }
+        else
+        {
+            EditMode();
+            ExitEditMode();
+        }
     }
 
     public void EditMode()
