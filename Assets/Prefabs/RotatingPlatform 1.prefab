@@ -480,7 +480,6 @@ GameObject:
   - component: {fileID: 1789697134166758674}
   - component: {fileID: 1789697134166758676}
   - component: {fileID: 1271884028865082847}
-  - component: {fileID: 1946420426241108889}
   m_Layer: 0
   m_Name: RotatingPlatform 1
   m_TagString: Untagged
@@ -558,18 +557,6 @@ MonoBehaviour:
   rotation: 0
   startGridPos: {x: 0, y: 0, z: 0}
   initialPos: {x: 0, y: 0, z: 0}
---- !u!114 &1946420426241108889
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1789697134166758675}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 718095096c9d16b44954c5ec522542ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1789697135068452305
 GameObject:
   m_ObjectHideFlags: 0

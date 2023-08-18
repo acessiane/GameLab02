@@ -21,13 +21,20 @@ public class ArrowTrap : MonoBehaviour
     {
         //spawnLocation = new Vector3() 
     }
+    private void OnEnable()
+    {
+        Debug.Log("1");
+        Instantiate(projectile, spawnLocation.position, transform.parent.transform.rotation);
 
+    }
     // Update is called once per frame
     void Update()
     {
+        /*
         timeSinceSpawned += Time.deltaTime;
         if (timeSinceSpawned >= spawnTime)
         {
+            
             if (transform.parent != null)
             {
                 //float rotationZ = transform.parent.transform.rotation.z;
@@ -49,5 +56,6 @@ public class ArrowTrap : MonoBehaviour
             }
             timeSinceSpawned = 0;
         }
+            */
     }
 }

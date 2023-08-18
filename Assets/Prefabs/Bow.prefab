@@ -810,7 +810,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8893132159091951137}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c7c7a120defb16c47800c95f551ec11f, type: 3}
   m_Name: 
@@ -818,7 +818,7 @@ MonoBehaviour:
   projectile: {fileID: 132142789247655361, guid: 9e9fe47ea01e34a4088f6fab4543f4f3, type: 3}
   spawnLocation: {fileID: 6675828716270885744}
   spawnRotation: {x: 0, y: 0, z: 0, w: 0}
-  spawnTime: 1.5
+  spawnTime: 0
 --- !u!114 &3873448174061639673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -831,10 +831,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6e71515ae4a94f46a5d26899678a6b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  type: 15
   isHalfRotated: 0
   rotation: 0
   startGridPos: {x: 0, y: 0, z: 0}
+  initialPos: {x: 0, y: 0, z: 0}
 --- !u!50 &2126817666
 Rigidbody2D:
   serializedVersion: 4
