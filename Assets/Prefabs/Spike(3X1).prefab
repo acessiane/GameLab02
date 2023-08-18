@@ -93,8 +93,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5626630697845023872}
-  - component: {fileID: 3558382838480151395}
   - component: {fileID: 8585241612082858787}
+  - component: {fileID: 4578945658297564582}
   m_Layer: 0
   m_Name: Spike(3X1)
   m_TagString: Spike
@@ -131,32 +131,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &3558382838480151395
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 759293611566594152}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.11011504}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 3, y: 0.7797699}
-  m_EdgeRadius: 0
 --- !u!114 &8585241612082858787
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,6 +147,36 @@ MonoBehaviour:
   isHalfRotated: 0
   rotation: 0
   startGridPos: {x: 0, y: 0, z: 0}
+  initialPos: {x: 0, y: 0, z: 0}
+--- !u!60 &4578945658297564582
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 759293611566594152}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 1.3043637, y: 0.52783227}
+      - {x: -1.3110845, y: 0.5332967}
+      - {x: -1.5144145, y: -0.47849953}
+      - {x: 1.5085127, y: -0.49030358}
 --- !u!1 &845102258440820281
 GameObject:
   m_ObjectHideFlags: 0
